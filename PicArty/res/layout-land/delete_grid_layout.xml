@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_landscape"
+    android:orientation="vertical" >
+
+    <ImageButton
+        android:id="@+id/btn_goto_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@null"
+        android:src="@drawable/btn_style_picarty" />
+
+    <GridView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/grid_view"
+        android:layout_width="480dp"
+        android:layout_height="0dip"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:columnWidth="150dp"
+        android:gravity="center"
+        android:horizontalSpacing="2dp"
+        android:numColumns="6"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="2dp" >
+    </GridView>
+
+    <RelativeLayout
+        android:id="@+id/grid_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#000000" >
+
+        <LinearLayout
+            android:id="@+id/l_border_top"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#b1b1b1" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/l_wrapbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@null" >
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_action_delete"
+                android:text="@string/cancel"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btn_delete_action"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_action_photo"
+                android:text="@string/delete_action"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rlo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:background="#dddddd"
+        android:padding="2dp">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/btn_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="@string/edit"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="@string/local_label"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ListView
+        android:id="@+id/lv_list_local"
+        android:layout_width="fill_parent"
+        android:layout_height="147dp"
+        android:padding="2dp" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="@string/service_label"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ListView
+        android:id="@+id/lv_list_social"
+        android:layout_width="fill_parent"
+        android:layout_height="268dp"
+        android:padding="2dp" >
+    </ListView>
+
+</LinearLayout>

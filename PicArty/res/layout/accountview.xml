@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <TextView
+            android:id="@+id/labelInfo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Enter email and password for your tumblr account."
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/labelUsername"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/labelInfo"
+            android:padding="10dp"
+            android:text="Email:"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/inputUsername"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/labelUsername"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:inputType="textEmailAddress"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/labelPassword"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/inputUsername"
+            android:padding="10dp"
+            android:text="Password"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/inputPassword"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/labelPassword"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:password="true"
+            android:text="" />
+
+        <LinearLayout
+            android:id="@+id/wrap_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/inputPassword"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/settingsBtnOk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:layout_marginLeft="10dip"
+                android:text="@string/login"
+                android:textSize="18dp" />
+
+            <Button
+                android:id="@+id/settingsBtnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/settingsBtnOk"
+                android:layout_toLeftOf="@id/settingsBtnOk"
+                android:text="@string/cancel"
+                android:textSize="18dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>

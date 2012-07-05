@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_landscape"
+    android:orientation="vertical" >
+
+    <ImageButton
+        android:id="@+id/btn_goto_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@null"
+        android:src="@drawable/btn_style_picarty" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+        <GridView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/grid_view"
+            android:layout_width="480dp"
+            android:layout_height="fill_parent"
+            android:layout_centerHorizontal="true"
+            android:columnWidth="75dp"
+            android:gravity="center"
+            android:horizontalSpacing="2dp"
+            android:numColumns="6"
+            android:stretchMode="spacingWidth"
+            android:verticalSpacing="2dp" >
+        </GridView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/grid_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#000000" >
+
+        <LinearLayout
+            android:id="@+id/l_border_top"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#b1b1b1" >
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:background="@null"
+            android:src="@drawable/btn_style_delete" />
+
+        <ImageButton
+            android:id="@+id/btn_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:background="@null"
+            android:src="@drawable/btn_style_photo" />
+    </RelativeLayout>
+
+</LinearLayout>

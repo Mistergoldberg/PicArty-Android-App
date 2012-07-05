@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/id_layout_camera"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal" >
+
+        <SurfaceView
+            android:id="@+id/camerapreview"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/id_bottom_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent" >
+        <ImageView 
+            android:id="@+id/id_image_mask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true" android:layout_centerHorizontal="true"/>
+
+        <FrameLayout
+            android:id="@+id/id_frameLayout_mask"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/id_selection_layout"
+            android:layout_width="53dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/bg_toolbar_bottom" >
+
+            <ImageButton
+                android:id="@+id/on_off"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="70dp"
+                android:background="@drawable/toggle_flash_on" />
+
+            <ImageButton
+                android:id="@+id/select_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/toggle_camera" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/id_selection_layout"
+            android:layout_width="53dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:background="#000000" >
+
+            <ImageButton
+                android:id="@+id/show_gallery"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/go_to_gallery_landscape_style" />
+
+            <ImageButton
+                android:id="@+id/takepicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/camera_button_style_landscape" />
+
+            <ImageButton
+                android:id="@+id/show_scroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/icon_small" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

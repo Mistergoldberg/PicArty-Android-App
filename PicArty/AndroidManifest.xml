@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.vnosc.picArty"
+    android:installLocation="preferExternal"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="9" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
+
+    <application
+        android:name="com.vnosc.picArty.libs.tumblr.TumblrApplication"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <activity
+            android:name="com.vnosc.picArty.PicArtyActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.vnosc.picArty.SplashScreen"
+            androidLlabel="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.vnosc.picArty.CategoryActivity"
+            androidLlabel="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.vnosc.picArty.GridImagesActivity"
+            androidLlabel="@string/app_name"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.vnosc.picArty.ShowGalleryActivity"
+            androidLlabel="@string/app_name"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.vnosc.picArty.DeleteImageActivity"
+            androidLlabel="@string/app_name"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name=".SelectShare"
+            androidLlabel="@string/app_name"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.vnosc.picArty.libs.twitter.ConnectActivity"
+            androidLlabel="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.vnosc.picArty.libs.twitter.SendImageActivity"
+            androidLlabel="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.vnosc.picArty.libs.flickr.FlickShareActivity"
+            androidLlabel="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="picarty-oauth" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.vnosc.picArty.libs.tumblr.UploadImageActivity"
+            androidLlabel="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name=".libs.tumblr.AccountActivity"
+            androidLlabel="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.vnosc.picArty.libs.tumblr.PostActivity"
+            androidLlabel="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.vnosc.picArty.libs.tumblr.PostActivity"
+            androidLlabel="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+
+        <service
+            android:name="com.vnosc.picArty.libs.tumblr.TumblrService"
+            android:label="TumblrService" >
+            <intent-filter>
+                <action android:name="com.vnosc.picArty.libs.tumblr.POST_PHOTO" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>
