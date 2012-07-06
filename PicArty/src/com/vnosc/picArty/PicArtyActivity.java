@@ -554,16 +554,6 @@ public class PicArtyActivity extends Activity implements
 						if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
 							try {
 								camera = Camera.open(camIdx);
-								parameters = camera.getParameters();
-								List<Camera.Size> sizes = parameters.getSupportedPictureSizes();
-								for (Camera.Size size : sizes) {
-									if (size.width == 640 && size.height == 480) {
-										parameters.setPictureSize(640, 480);
-									}
-								}
-								camera.setDisplayOrientation(0);
-								camera.setPreviewDisplay(surfaceHolder);
-								camera.setParameters(parameters);
 							} catch (Exception e) {
 								Log.e("failed",
 										"Camera failed to open: "
@@ -578,16 +568,7 @@ public class PicArtyActivity extends Activity implements
 						if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
 							try {
 								camera = Camera.open(camIdx);
-								parameters = camera.getParameters();
-								List<Camera.Size> sizes = parameters.getSupportedPictureSizes();
-								for (Camera.Size size : sizes) {
-									if (size.width == 640 && size.height == 480) {
-										parameters.setPictureSize(640, 480);
-									}
-								}
 								camera.setDisplayOrientation(0);
-								camera.setPreviewDisplay(surfaceHolder);
-								camera.setParameters(parameters);
 							} catch (Exception e) {
 								Log.e("failed",
 										"Camera failed to open: "
