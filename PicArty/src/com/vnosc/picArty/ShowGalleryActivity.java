@@ -2,17 +2,26 @@ package com.vnosc.picArty;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+import com.vnosc.picArty.common.Common;
 import com.vnosc.picArty.libs.HorizontalPager;
+import com.vnosc.picArty.libs.tumblr.UploadImageActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -33,15 +42,55 @@ public class ShowGalleryActivity extends Activity implements OnClickListener {
 		initVariables();
 		sdDir = new File("/sdcard/PicArty");
 		sdDirFiles = sdDir.listFiles();
+		Arrays.sort(sdDirFiles, new Comparator<File>() {
+			public int compare(File f1, File f2) {
+				return Long.valueOf(f2.lastModified()).compareTo(
+						f1.lastModified());
+			}
+		});
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.start("UA-9100060-3", 20, this);
+		tracker.trackPageView("/OS/" + Build.VERSION.SDK);
+		tracker.trackPageView("/rev/" + getApplicationVersion());
 		updateDataScroll();
 		setCurrentSlide();
 		lGallery.addView(scrollGallery, new LinearLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(dialogShare != null){
+			dialogShare.hide();
+		}
+	}
+	
+	@Override
+	protected void onDestroy(){
+		if(currentBitmap != null){
+			currentBitmap.recycle();
+		}
+		super.onDestroy();
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
 		dialogShare.hide();
+		switch (requestCode) {
+		case Common.OK_TUMBLR:
+			if (resultCode == RESULT_OK) {
+				tracker.trackPageView("/UploadImageActivity");
+				Intent intent = new Intent(this,
+						UploadImageActivity.class);
+				intent.putExtra("filename", sdDirFiles[currentPos].getAbsolutePath());
+				startActivity(intent);
+			}
+			break;
+		case Common.OPTION_SHARE:
+			break;
+		}
 	}
 
 	@Override
@@ -71,14 +120,22 @@ public class ShowGalleryActivity extends Activity implements OnClickListener {
 										int id) {
 									boolean deleted = sdDirFiles[currentPos]
 											.delete();
-									if (currentPos == 0)
-										currentPos++;
-									else
+									if (currentPos != 0)
 										currentPos--;
 									if (deleted) {
 										scrollGallery = new HorizontalPager(
 												getApplicationContext());
 										sdDirFiles = sdDir.listFiles();
+										if(sdDirFiles.length == 0) {
+											ShowGalleryActivity.this.finish();
+											return;
+										}
+										Arrays.sort(sdDirFiles, new Comparator<File>() {
+											public int compare(File f1, File f2) {
+												return Long.valueOf(f2.lastModified()).compareTo(
+														f1.lastModified());
+											}
+										});
 										updateDataScroll();
 										setCurrentSlide();
 										lGallery.removeAllViews();
@@ -150,7 +207,7 @@ public class ShowGalleryActivity extends Activity implements OnClickListener {
 			ImageView imageView = new ImageView(this);
 			imageView.setImageDrawable(getResources().getDrawable(
 					R.drawable.loading));
-			imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+			imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			listGallary.add(imageView);
 			scrollGallery.addView(imageView, new LayoutParams(
 					android.view.ViewGroup.LayoutParams.FILL_PARENT,
@@ -172,6 +229,16 @@ public class ShowGalleryActivity extends Activity implements OnClickListener {
 			opts.inSampleSize = 1;
 			Bitmap bitmap = BitmapFactory.decodeFile(
 					sdDirFiles[listGallary.size() - 1].getAbsolutePath(), opts);
+			if(bitmap.getHeight() > bitmap.getWidth()){
+				widthImage = context.getResources().getDisplayMetrics().widthPixels;
+				heightImage = (int)(widthImage * 640 / (float)480);
+			}else{
+				heightImage = context.getResources().getDisplayMetrics().heightPixels;
+				widthImage = (int)(heightImage * 640 / (float)480);
+			}
+			
+			bitmap = Bitmap.createScaledBitmap(bitmap, widthImage, heightImage, true);
+			
 			ImageView currentSlide = listGallary.get(listGallary.size() - 1);
 			currentSlide.setImageBitmap(bitmap);
 		}
@@ -181,6 +248,18 @@ public class ShowGalleryActivity extends Activity implements OnClickListener {
 			opts.inSampleSize = 1;
 			Bitmap bitmap = BitmapFactory.decodeFile(
 					sdDirFiles[0].getAbsolutePath(), opts);
+			
+			if(bitmap.getHeight() > bitmap.getWidth()){
+				widthImage = context.getResources().getDisplayMetrics().widthPixels;
+				heightImage = (int)(widthImage * 640 / (float)480);
+			}else{
+				heightImage = context.getResources().getDisplayMetrics().heightPixels;
+				widthImage = (int)(heightImage * 640 / (float)480);
+			}
+			
+			bitmap = Bitmap.createScaledBitmap(bitmap, widthImage, heightImage, true);
+			
+			
 			ImageView currentSlide = listGallary.get(0);
 			currentSlide.setImageBitmap(bitmap);
 		}
@@ -192,6 +271,17 @@ public class ShowGalleryActivity extends Activity implements OnClickListener {
 				opts.inSampleSize = 1;
 				Bitmap bitmap = BitmapFactory.decodeFile(sdDirFiles[currentPos
 						+ i - 1].getAbsolutePath(), opts);
+				if(bitmap.getHeight() > bitmap.getWidth()){
+					widthImage = context.getResources().getDisplayMetrics().widthPixels;
+					heightImage = (int)(widthImage * 640 / (float)480);
+				}else{
+					heightImage = context.getResources().getDisplayMetrics().heightPixels;
+					widthImage = (int)(heightImage * 640 / (float)480);
+				}
+				
+				bitmap = Bitmap.createScaledBitmap(bitmap, widthImage, heightImage, true);
+				
+				
 				ImageView currentSlide = listGallary.get(currentPos + i - 1);
 				currentSlide.setImageBitmap(bitmap);
 			}
@@ -218,6 +308,17 @@ public class ShowGalleryActivity extends Activity implements OnClickListener {
 							if (currentPos == listGallary.size() - 1) {
 								currentBitmap = BitmapFactory.decodeFile(
 										sdDirFiles[0].getAbsolutePath(), opts);
+								
+								if(currentBitmap.getHeight() > currentBitmap.getWidth()){
+									widthImage = context.getResources().getDisplayMetrics().widthPixels;
+									heightImage = (int)(widthImage * 640 / (float)480);
+								}else{
+									heightImage = context.getResources().getDisplayMetrics().heightPixels;
+									widthImage = (int)(heightImage * 640 / (float)480);
+								}
+								
+								currentBitmap = Bitmap.createScaledBitmap(currentBitmap, widthImage, heightImage, true);
+								
 								ImageView currentSlide = listGallary.get(0);
 								currentSlide.setBackgroundColor(Color.BLACK);
 								currentSlide.setImageBitmap(currentBitmap);
@@ -225,6 +326,17 @@ public class ShowGalleryActivity extends Activity implements OnClickListener {
 								currentBitmap = BitmapFactory.decodeFile(
 										sdDirFiles[currentPos + 1]
 												.getAbsolutePath(), opts);
+								
+								if(currentBitmap.getHeight() > currentBitmap.getWidth()){
+									widthImage = context.getResources().getDisplayMetrics().widthPixels;
+									heightImage = (int)(widthImage * 640 / (float)480);
+								}else{
+									heightImage = context.getResources().getDisplayMetrics().heightPixels;
+									widthImage = (int)(heightImage * 640 / (float)480);
+								}
+								
+								currentBitmap = Bitmap.createScaledBitmap(currentBitmap, widthImage, heightImage, true);
+								
 								ImageView currentSlide = listGallary
 										.get(currentPos + 1);
 								currentSlide.setBackgroundColor(Color.BLACK);
@@ -241,6 +353,17 @@ public class ShowGalleryActivity extends Activity implements OnClickListener {
 								currentBitmap = BitmapFactory.decodeFile(
 										sdDirFiles[listGallary.size() - 1]
 												.getAbsolutePath(), opts);
+								
+								if(currentBitmap.getHeight() > currentBitmap.getWidth()){
+									widthImage = context.getResources().getDisplayMetrics().widthPixels;
+									heightImage = (int)(widthImage * 640 / (float)480);
+								}else{
+									heightImage = context.getResources().getDisplayMetrics().heightPixels;
+									widthImage = (int)(heightImage * 640 / (float)480);
+								}
+								
+								currentBitmap = Bitmap.createScaledBitmap(currentBitmap, widthImage, heightImage, true);
+								
 								ImageView currentSlide = listGallary
 										.get(listGallary.size() - 1);
 								currentSlide.setBackgroundColor(Color.BLACK);
@@ -249,6 +372,17 @@ public class ShowGalleryActivity extends Activity implements OnClickListener {
 								currentBitmap = BitmapFactory.decodeFile(
 										sdDirFiles[currentPos - 1]
 												.getAbsolutePath(), opts);
+								
+								if(currentBitmap.getHeight() > currentBitmap.getWidth()){
+									widthImage = context.getResources().getDisplayMetrics().widthPixels;
+									heightImage = (int)(widthImage * 640 / (float)480);
+								}else{
+									heightImage = context.getResources().getDisplayMetrics().heightPixels;
+									widthImage = (int)(heightImage * 640 / (float)480);
+								}
+								
+								currentBitmap = Bitmap.createScaledBitmap(currentBitmap, widthImage, heightImage, true);
+								
 								ImageView currentSlide = listGallary
 										.get(currentPos - 1);
 								currentSlide.setBackgroundColor(Color.BLACK);
@@ -264,6 +398,19 @@ public class ShowGalleryActivity extends Activity implements OnClickListener {
 			}
 		};
 		new Thread(runnable).start();
+	}
+	
+	private String getApplicationVersion() {
+		PackageManager pm = getPackageManager();
+		String version = "r0";
+		try {
+			PackageInfo pi = pm.getPackageInfo(
+					"com.tacticalnuclearstrike.tttumblr", 0);
+			version = pi.versionName;
+		} catch (NameNotFoundException e) {
+
+		}
+		return version;
 	}
 
 	/***************************************************
@@ -325,4 +472,9 @@ public class ShowGalleryActivity extends Activity implements OnClickListener {
 	private File sdDir;
 
 	private DialogShare dialogShare;
+	
+	private int widthImage;
+	private int heightImage;
+	
+	GoogleAnalyticsTracker tracker;
 }

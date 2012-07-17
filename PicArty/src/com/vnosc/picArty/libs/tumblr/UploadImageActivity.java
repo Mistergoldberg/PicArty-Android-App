@@ -66,11 +66,11 @@ public class UploadImageActivity extends PostActivity {
 	private void setupButtons() {
 
 		Button btnPostPhoto = (Button) findViewById(R.id.btnPostImage);
-		btnPostPhoto.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
+//		btnPostPhoto.setOnClickListener(new View.OnClickListener() {
+//			public void onClick(View v) {
 				uploadImage();
-			}
-		});
+//			}
+//		});
 
 	}
 
@@ -85,28 +85,6 @@ public class UploadImageActivity extends PostActivity {
 		if (resultCode != Activity.RESULT_OK)
 			return;
 
-		if (requestCode == TAKE_PICTURE) {
-			try {
-				File f = new File(outputFileUri.getPath());
-
-				outputFileUri = Uri
-						.parse(android.provider.MediaStore.Images.Media
-								.insertImage(getContentResolver(),
-										f.getAbsolutePath(), null, null));
-
-				// f.delete();
-				setSelectedImageThumbnail();
-
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else if (requestCode == SELECT_IMAGE) {
-			outputFileUri = data.getData();
-			setSelectedImageThumbnail();
-		}
 	}
 
 	private void setSelectedImageThumbnail() {
@@ -141,19 +119,15 @@ public class UploadImageActivity extends PostActivity {
 	}
 
 	private void uploadImage() {
-		// if (outputFileUri == null) {
-		// Toast.makeText(this, "No image to upload!", Toast.LENGTH_SHORT)
-		// .show();
-		// return;
-		// }
+
 		Toast.makeText(getApplicationContext(),
 				"Your image uploading in background", Toast.LENGTH_LONG).show();
-		EditText text = (EditText) findViewById(R.id.tbImageCaption);
-		final String caption = text.getText().toString();
+//		EditText text = (EditText) findViewById(R.id.tbImageCaption);
+//		final String caption = text.getText().toString();
 
 		Intent uploadIntent = new Intent(TumblrService.ACTION_POST_PHOTO);
 		uploadIntent.putExtra("photo", fileName);// getRealPathFromURI(outputFileUri)
-		uploadIntent.putExtra("caption", caption);
+		uploadIntent.putExtra("caption", "PicArty - Best Photo App Ever!");
 		uploadIntent.putExtra("options", mPostOptions);
 		startService(uploadIntent);
 

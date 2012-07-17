@@ -3,6 +3,7 @@ package com.vnosc.picArty;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,16 +20,20 @@ import com.vnosc.picArty.libs.facebook.BaseRequestListener;
 import com.vnosc.picArty.libs.facebook.SessionEvents;
 import com.vnosc.picArty.libs.facebook.SessionEvents.AuthListener;
 import com.vnosc.picArty.libs.facebook.SessionEvents.LogoutListener;
-import com.vnosc.picArty.libs.flickr.FlickShareActivity;
+import com.vnosc.picArty.libs.flickr.FlickrFree;
 import com.vnosc.picArty.libs.tumblr.AccountActivity;
 import com.vnosc.picArty.libs.twitter.ConnectActivity;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -136,10 +141,29 @@ public class DialogShare extends Dialog implements OnClickListener {
 								// tumblr:3 flickr:4 email:5 logout:6
 		switch (id) {
 		case Common.FACEBOOK_ORDER:
+			
+//			Uri screenUri = Uri.fromFile(new File(fileName));
+//			Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+//			sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "PicArty - Best Photo App Ever!");
+//			sharingIntent.setType("image/png");
+//			sharingIntent.putExtra(Intent.EXTRA_STREAM, screenUri);
+//			PackageManager pm = this.getContext().getPackageManager();
+//			List<ResolveInfo> activityList = pm.queryIntentActivities(sharingIntent, 0);
+//			for (final ResolveInfo app : activityList) {
+//			    if ((app.activityInfo.packageName).contains("facebook")) {
+//			        final ActivityInfo activity = app.activityInfo;
+//			        final ComponentName name = new ComponentName(activity.applicationInfo.packageName, activity.name);
+//			        sharingIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+//			        sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+//			        sharingIntent.setComponent(name);
+//			        this.getContext().startActivity(sharingIntent);
+//			        break;
+//			   }
+//			}
 			if (mFacebook.isSessionValid()) {
 				uploadPhotoFacebook();
 			} else {
-				mFacebook.authorize((Activity) context, permissionsFace,
+				mFacebook.authorize((Activity) context, permissionsFace, Facebook.FORCE_DIALOG_AUTH, 
 						new LoginDialogListener());
 			}
 			break;
@@ -160,20 +184,36 @@ public class DialogShare extends Dialog implements OnClickListener {
 
 		case Common.FLICKR_ORDER:
 			// flickr share
-			Intent intentFlickr = new Intent(context, FlickShareActivity.class);
+			Intent intentFlickr = new Intent(context, FlickrFree.class);
 			intentFlickr.putExtra("filename", fileName);
 			context.startActivity(intentFlickr);
 			break;
 
 		case Common.EMAIL_ORDER:
-			Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+			Intent sharingEmailIntent = new Intent(Intent.ACTION_SEND);
 
 			Uri screenshotUri = Uri.fromFile(new File(fileName));
 
-			sharingIntent.setType("image/png");
-			sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
-			context.startActivity(Intent.createChooser(sharingIntent,
-					"Share image using"));
+			sharingEmailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "PicArty - Best Photo App Ever!");
+			sharingEmailIntent.setType("image/png");
+			sharingEmailIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+			
+			PackageManager pmEmail = this.getContext().getPackageManager();
+			List<ResolveInfo> activityListEmail = pmEmail.queryIntentActivities(sharingEmailIntent, 0);
+			for (ResolveInfo app : activityListEmail) {
+			    if ((app.activityInfo.packageName).contains("email")) {
+			        final ActivityInfo activity = app.activityInfo;
+			        final ComponentName name = new ComponentName(activity.applicationInfo.packageName, activity.name);
+			        sharingEmailIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+			        sharingEmailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+			        sharingEmailIntent.setComponent(name);
+			        this.getContext().startActivity(sharingEmailIntent);
+			        break;
+			   }
+			}
+			
+//			context.startActivity(Intent.createChooser(sharingEmailIntent,
+//					"Share image using"));
 			break;
 
 		case Common.LOGOUT_ORDER:
@@ -196,8 +236,8 @@ public class DialogShare extends Dialog implements OnClickListener {
 		uploadDialog = ProgressDialog.show(context, "", "Uploading...");
 		Bundle params = new Bundle();
 		params.putString("method", "photos.upload");
-		params.putString("caption", "Shared from PicArty Android app");
-		params.putString("description", "Shared from PicArty Android app");
+		params.putString("caption", "PicArty Photos");
+		params.putString("description", "PicArty - Best Photo App Ever!");
 		File myPhoto = new File(fileName);
 		try {
 			byte[] imgData = new byte[(int) myPhoto.length()];
@@ -283,8 +323,9 @@ public class DialogShare extends Dialog implements OnClickListener {
 							@Override
 							public void run() {
 								uploadDialog.hide();
-								Toast.makeText(context, "Shared",
+								Toast.makeText(context, "Shared on Facebook",
 										Toast.LENGTH_SHORT).show();
+								DialogShare.this.hide();
 							}
 						});
 					}

@@ -45,7 +45,7 @@
             android:id="@+id/l_border_top"
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:background="#b1b1b1" >
+            android:background="#000000" >
         </LinearLayout>
 
         <ImageButton
@@ -56,6 +56,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:background="@null"
+            android:contentDescription="@string/nodes"
             android:src="@drawable/btn_style_delete" />
 
         <ImageButton
@@ -66,6 +67,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:background="@null"
+            android:contentDescription="@string/nodes"
             android:src="@drawable/btn_style_photo" />
     </RelativeLayout>
 

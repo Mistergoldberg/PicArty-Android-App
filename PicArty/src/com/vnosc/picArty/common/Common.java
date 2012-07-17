@@ -26,11 +26,11 @@ public class Common {
 	public static final int IMAGE_WIDTH = 1024;
 	public static final int IMAGE_HEIGHT = 768;
 	public static final String CAMERA_LOG = "CAMERA_ERROR";
-	public static final String APP_FACEBOOK_ID = "241765749274372";
+	public static final String APP_FACEBOOK_ID = "359662774077273";
 
 	// Twitter key
-	public static final String OAUTH_CONSUMER_KEY = "c3fUtVSaGssiO0BOiuuGbw";
-	public static final String OAUTH_CONSUMER_SECRET = "lXlOV7pvnVLKZWumfdaNfbDFIH7SkEK7GE95UlMcus";
+	public static final String OAUTH_CONSUMER_KEY = "mCxynBhXzKT4Xw5eog9YUw";
+	public static final String OAUTH_CONSUMER_SECRET = "HrA7H6rbX88aP88SMuREP2UulDzaLXyCLWZ4ca7Rn8U";
 
 	// RESULTS OK for share login
 	public static final int OK_FACEBOOK = 1;
@@ -57,9 +57,9 @@ public class Common {
 	// share name
 
 	public static final String[] SHARE_NAMES = { "Noname", "Facebook",
-			"Twitter", "Tumblr", "Flickr", "Email", "Logout" };
+			"Twitter", "Tumblr", "Flickr", "Email"};
 
-	public static final String[] ADAPTER_LOCAL = { "Email", "Logout" };
+	public static final String[] ADAPTER_LOCAL = { "Email"};
 	public static final String[] ADAPTER_SOCIAL = new String[] { "Facebook",
 			"Twitter", "Tumblr", "Flickr" };
 

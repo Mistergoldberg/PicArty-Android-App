@@ -38,7 +38,7 @@
             android:id="@+id/l_border_top"
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:background="#b1b1b1" >
+            android:background="#000000" >
         </LinearLayout>
 
         <LinearLayout

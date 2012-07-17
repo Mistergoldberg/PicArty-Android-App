@@ -1,5 +1,8 @@
 package com.vnosc.picArty.libs.twitter;
 
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.http.AccessToken;
@@ -45,9 +48,13 @@ public class SendImageActivity extends Activity {
 	
 	private String mPath;
 	
-	private static final String twitpic_api_key = "e4b006909aab25404439244e0a5348f7";
-	private static final String twitter_consumer_key = "ycwLejracx4aChmINat1Q";
-	private static final String twitter_secret_key = "T7sBuUJzAM5SRXtajiqzA495hAmNLhzJGCHWZs78";
+	private static final String twitpic_api_key = "6ad2f360f6333bd4c5e8d5173c69bbfc";
+	private static final String twitter_consumer_key = Common.OAUTH_CONSUMER_KEY;
+	private static final String twitter_secret_key = Common.OAUTH_CONSUMER_SECRET;
+	
+	private String token;
+	private String secret;
+	
 	
 	private static final String TAG = "AndroidTwitpic";
 	
@@ -100,6 +107,8 @@ public class SendImageActivity extends Activity {
             .setOAuthAccessToken(accessToken.getToken()) 
             .setOAuthAccessTokenSecret(accessToken.getTokenSecret()) 
             .build(); 
+			token = conf.getOAuthAccessToken();
+			secret = conf.getOAuthAccessTokenSecret();
 			
 			OAuthAuthorization auth = new OAuthAuthorization (conf, conf.getOAuthConsumerKey (), conf.getOAuthConsumerSecret (),
 	                new AccessToken (conf.getOAuthAccessToken (), conf.getOAuthAccessTokenSecret ()));
@@ -122,15 +131,29 @@ public class SendImageActivity extends Activity {
             return result;
         }
 
+
         protected void onProgressUpdate(Integer... progress) {            
         }
 
-        protected void onPostExecute(Long result) {
+        @SuppressWarnings("deprecation")
+		protected void onPostExecute(Long result) {
         	mProgressDialog.cancel();
         	
         	String text = (result == 1) ? "Image sent successfully.\n Twitpic url is: " + url : "Failed to send image";
         	
         	Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+        	AccessToken a = new AccessToken(token,secret);
+    		Twitter twitter = new TwitterFactory().getInstance();
+    		twitter.setOAuthConsumer(Common.OAUTH_CONSUMER_KEY, Common.OAUTH_CONSUMER_SECRET);
+    		twitter.setOAuthAccessToken(a);
+            try {
+				twitter.updateStatus(url);
+			} catch (TwitterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
+        	SendImageActivity.this.finish();
         }
     }
     

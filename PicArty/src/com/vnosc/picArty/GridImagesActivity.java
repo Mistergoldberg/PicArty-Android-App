@@ -1,6 +1,8 @@
 package com.vnosc.picArty;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Vector;
 
 import com.vnosc.picArty.adapter.ImageAdapter;
@@ -52,6 +54,7 @@ public class GridImagesActivity extends Activity {
 				Intent intent = new Intent(getApplicationContext(),
 						PicArtyActivity.class);
 				startActivity(intent);
+				GridImagesActivity.this.finish();
 			}
 		});
 
@@ -64,6 +67,7 @@ public class GridImagesActivity extends Activity {
 						ShowGalleryActivity.class);
 				intent.putExtra("position", position);
 				startActivity(intent);
+				GridImagesActivity.this.finish();
 			}
 		});
 
@@ -74,6 +78,7 @@ public class GridImagesActivity extends Activity {
 				Intent intent = new Intent(getApplicationContext(),
 						CategoryActivity.class);
 				startActivity(intent);
+				GridImagesActivity.this.finish();
 			}
 		});
 	}
@@ -89,6 +94,12 @@ public class GridImagesActivity extends Activity {
 		mySDCardImages = new Vector<CellGrid>();
 		File sdDir = new File("/sdcard/PicArty");
 		File[] sdDirFiles = sdDir.listFiles();
+		Arrays.sort(sdDirFiles, new Comparator<File>() {
+			public int compare(File f1, File f2) {
+				return Long.valueOf(f2.lastModified()).compareTo(
+						f1.lastModified());
+			}
+		});
 		for (File singleFile : sdDirFiles) {
 			CellGrid cell = new CellGrid();
 			cell.setSelect(false);
@@ -114,8 +125,8 @@ public class GridImagesActivity extends Activity {
 
 		ViewGroup.LayoutParams gridLayout = gridView.getLayoutParams();
 		if (display.getHeight() > display.getWidth()) {
-			gridLayout.width = (int) (Common.WIDTH_SCREEN * this
-					.getResources().getDisplayMetrics().density);
+			gridLayout.width = (int) (Common.WIDTH_SCREEN * this.getResources()
+					.getDisplayMetrics().density);
 
 			gridView.setAdapter(new ImageAdapter(this, this.getResources()
 					.getDisplayMetrics().density, mySDCardImages));

@@ -37,7 +37,7 @@ public class TumblrService extends RoboIntentService {
 
 	// Actions:
 	public static final String ACTION_POST_TEXT = "com.tacticalnuclearstrike.tttumblr.POST_TEXT";
-	public static final String ACTION_POST_PHOTO = "com.tacticalnuclearstrike.tttumblr.POST_PHOTO";
+	public static final String ACTION_POST_PHOTO = "com.vnosc.picArty.libs.tumblr.POST_PHOTO";
 	public static final String ACTION_POST_VIDEO = "com.tacticalnuclearstrike.tttumblr.POST_VIDEO";
 	public static final String ACTION_POST_CONVERSATION = "com.tacticalnuclearstrike.tttumblr.POST_CONVERSATION";
 	public static final String ACTION_POST_QUOTE = "com.tacticalnuclearstrike.tttumblr.POST_QUOTE";

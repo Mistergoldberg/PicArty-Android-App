@@ -1,6 +1,7 @@
 package com.vnosc.picArty.libs.tumblr;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +25,11 @@ public class AccountActivity extends RoboActivity {
 		setupControls();
 
 		loadUserNameAndPassword();
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		this.finish();
 	}
 
 	private void loadUserNameAndPassword() {

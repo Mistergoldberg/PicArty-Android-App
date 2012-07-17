@@ -23,11 +23,11 @@
             android:id="@+id/l_border_top"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="#b1b1b1" >
+            android:background="#000000" >
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/l_border_top"
+            android:id="@+id/l_bottom"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center" >
@@ -38,14 +38,16 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="@null"
+                android:contentDescription="@string/nodes"
                 android:src="@drawable/btn_style_share" />
 
             <ImageButton
                 android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-				android:layout_weight="1"
+                android:layout_weight="1"
                 android:background="@null"
+                android:contentDescription="@string/nodes"
                 android:src="@drawable/go_to_gallery_landscape_style" />
 
             <ImageButton
@@ -54,14 +56,16 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="@null"
+                android:contentDescription="@string/nodes"
                 android:src="@drawable/btn_style_photo" />
 
             <ImageButton
                 android:id="@+id/btn_g_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-				android:layout_weight="1"
+                android:layout_weight="1"
                 android:background="@null"
+                android:contentDescription="@string/nodes"
                 android:src="@drawable/btn_style_delete" />
         </LinearLayout>
     </RelativeLayout>

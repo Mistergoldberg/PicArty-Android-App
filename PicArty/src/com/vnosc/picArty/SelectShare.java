@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,18 +22,21 @@ import com.vnosc.picArty.libs.facebook.BaseRequestListener;
 import com.vnosc.picArty.libs.facebook.SessionEvents;
 import com.vnosc.picArty.libs.facebook.SessionEvents.AuthListener;
 import com.vnosc.picArty.libs.facebook.SessionEvents.LogoutListener;
-import com.vnosc.picArty.libs.flickr.FlickShareActivity;
+import com.vnosc.picArty.libs.flickr.FlickrFree;
 import com.vnosc.picArty.libs.tumblr.AccountActivity;
 import com.vnosc.picArty.libs.tumblr.UploadImageActivity;
 import com.vnosc.picArty.libs.twitter.ConnectActivity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Build;
@@ -57,7 +61,7 @@ public class SelectShare extends Activity {
 	private SharedPreferences settings;
 	private SharedPreferences.Editor editor;
 	SharedPreferences settingSwitch;
-	private String[] permissionsFace = { "offline_access", "publish_stream",
+	private String[] permissionsFace = { "publish_stream",
 			"user_photos", "publish_checkins", "photo_upload" };
 	private ArrayList<Integer> listOrderShare;
 	private boolean[] listSwitchShareSocial;
@@ -82,6 +86,11 @@ public class SelectShare extends Activity {
 		mContext = this;
 		initVariables();
 	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -98,6 +107,9 @@ public class SelectShare extends Activity {
 		case Common.OPTION_SHARE:
 			break;
 		}
+		
+		this.finish();
+		
 	}
 
 	private String getApplicationVersion() {
@@ -170,7 +182,7 @@ public class SelectShare extends Activity {
 
 		lvShareLocalSerVice = (ListView) findViewById(R.id.lv_list_local);
 		lvShareSocial = (ListView) findViewById(R.id.lv_list_social);
-		adapterLocal = new String[] { "Email", "Logout" };
+		adapterLocal = new String[] { "Email"};
 		adapterSocial = new String[] { "Twitter", "Facebook", "Tumblr",
 				"Flickr" };
 		initDataAdapter();
@@ -200,17 +212,27 @@ public class SelectShare extends Activity {
 							if (settings.getInt(Common.FIRST_ORDER, 0) != Common.EMAIL_ORDER) {
 								settingShare(Common.EMAIL_ORDER);
 							}
-							Intent sharingIntent = new Intent(
-									Intent.ACTION_SEND);
+							Intent sharingEmailIntent = new Intent(Intent.ACTION_SEND);
 
-							Uri screenshotUri = Uri
-									.fromFile(new File(fileName));
+							Uri screenshotUri = Uri.fromFile(new File(fileName));
 
-							sharingIntent.setType("image/png");
-							sharingIntent.putExtra(Intent.EXTRA_STREAM,
-									screenshotUri);
-							startActivity(Intent.createChooser(sharingIntent,
-									"Share image using"));
+							sharingEmailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "PicArty - Best Photo App Ever!");
+							sharingEmailIntent.setType("image/png");
+							sharingEmailIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+							
+							PackageManager pmEmail = getApplicationContext().getPackageManager();
+							List<ResolveInfo> activityListEmail = pmEmail.queryIntentActivities(sharingEmailIntent, 0);
+							for (ResolveInfo app : activityListEmail) {
+							    if ((app.activityInfo.packageName).contains("email")) {
+							        final ActivityInfo activity = app.activityInfo;
+							        final ComponentName name = new ComponentName(activity.applicationInfo.packageName, activity.name);
+							        sharingEmailIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+							        sharingEmailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |  Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+							        sharingEmailIntent.setComponent(name);
+							        getApplicationContext().startActivity(sharingEmailIntent);
+							        break;
+							   }
+							}
 							return;
 						}
 						if (adapter.getShareIndex(position) == Common.SHARE_NAMES[6]) {
@@ -254,7 +276,7 @@ public class SelectShare extends Activity {
 								uploadPhotoFacebook();
 							} else {
 								mFacebook.authorize(SelectShare.this,
-										permissionsFace,
+										permissionsFace, Facebook.FORCE_DIALOG_AUTH, 
 										new LoginDialogListener());
 							}
 							return;
@@ -268,7 +290,7 @@ public class SelectShare extends Activity {
 							Intent intent = new Intent(getApplicationContext(),
 									ConnectActivity.class);
 							intent.putExtra("filename", fileName);
-							startActivity(intent);
+							startActivityForResult(intent, Common.OK_FACEBOOK);
 							return;
 						}
 						if (adapter.getShareIndex(position) == Common.SHARE_NAMES[3]) {
@@ -292,9 +314,9 @@ public class SelectShare extends Activity {
 							// flickr share
 							Intent intentFlickr = new Intent(
 									getApplicationContext(),
-									FlickShareActivity.class);
+									FlickrFree.class);
 							intentFlickr.putExtra("filename", fileName);
-							startActivity(intentFlickr);
+							startActivityForResult(intentFlickr, Common.OK_FLICKR);
 							return;
 						}
 					}
@@ -342,13 +364,13 @@ public class SelectShare extends Activity {
 	 */
 	public void readShareOnOff() {
 
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < Common.ADAPTER_LOCAL.length; i++) {
 			listSwitchShareLocal[i] = settingSwitch.getBoolean(
 					Common.ADAPTER_LOCAL[i], true);
 
 		}
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < Common.ADAPTER_SOCIAL.length; i++) {
 			listSwitchShareSocial[i] = settingSwitch.getBoolean(
 					Common.ADAPTER_SOCIAL[i], true);
 		}
@@ -460,8 +482,8 @@ public class SelectShare extends Activity {
 		uploadDialog = ProgressDialog.show(mContext, "", "Uploading...");
 		Bundle params = new Bundle();
 		params.putString("method", "photos.upload");
-		params.putString("caption", "Shared from PicArty Android app");
-		params.putString("description", "Shared from PicArty Android app");
+		params.putString("caption", "PicArty Photos");
+		params.putString("description", "PicArty - Best Photo App Ever!");
 		File myPhoto = new File(fileName);
 		try {
 			byte[] imgData = new byte[(int) myPhoto.length()];
@@ -547,8 +569,9 @@ public class SelectShare extends Activity {
 							@Override
 							public void run() {
 								uploadDialog.hide();
-								Toast.makeText(mContext, "Shared",
+								Toast.makeText(mContext, "Shared on Facebook",
 										Toast.LENGTH_SHORT).show();
+								SelectShare.this.finish();
 							}
 						});
 					}

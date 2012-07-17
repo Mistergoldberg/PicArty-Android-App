@@ -3,6 +3,7 @@ package com.vnosc.picArty;
 import com.vnosc.picArty.common.Common;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -28,6 +29,7 @@ public class CategoryActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.category);
 		initVariables();
+		context = this;
 		initGui();
 	}
 
@@ -118,15 +120,25 @@ public class CategoryActivity extends Activity implements OnClickListener {
 						Intent intent = new Intent(getApplicationContext(),
 								PicArtyActivity.class);
 						intent.putExtra("position", v.getId());
+//						intent.putExtra("islandscape", context.getResources().getDisplayMetrics().heightPixels > context.getResources().getDisplayMetrics().widthPixels? false:true);
 						startActivity(intent);
 					}
 				});
 				lContainGallery.addView(imageView, param);
 			}
+			
+			scrGalerry.post(new Runnable() { 
+		        public void run() { 
+		        	scrGalerry.scrollTo(0, 200 * (int)(getResources().getDisplayMetrics().heightPixels/ (float)Common.HEIGHT_SCREEN));
+		        }
+		    });
 		} catch (Exception ex) {
 			Log.d("Image found:", ex.toString());
 		}
+		scrGalerry.setOverScrollMode(ScrollView.OVER_SCROLL_ALWAYS);
+		scrGalerry.scrollBy(100, scrGalerry.getBottom());
 	}
+	
 
 	/* private variables */
 	// private ScrollView scrGallery;
@@ -137,4 +149,5 @@ public class CategoryActivity extends Activity implements OnClickListener {
 	// private DisplayMetrics displayMetric;
 	private int heightScreen;
 	private int widthScreen;
+	private Context context;
 }

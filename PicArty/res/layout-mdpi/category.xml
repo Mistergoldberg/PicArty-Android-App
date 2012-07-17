@@ -22,22 +22,30 @@
         </LinearLayout>
     </ScrollView>
 
-    <ImageView
-        android:id="@+id/ImageView01"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/landing_screen_frame" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
-    <ImageButton
-        android:id="@+id/btn_goto_gallery"
-        android:background="@null"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"/>
+        <ImageView
+            android:id="@+id/ImageView01"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/nodes"
+            android:scaleType="fitXY"
+            android:src="@drawable/landing_screen_frame" />
+
+        <ImageButton
+            android:id="@+id/btn_goto_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/gallery_glow_style"
+            android:contentDescription="@string/nodes" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

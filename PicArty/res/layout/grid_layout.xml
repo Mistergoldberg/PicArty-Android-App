@@ -45,7 +45,7 @@
             android:id="@+id/l_border_top"
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:background="#b1b1b1" >
+            android:background="#000000" >
         </LinearLayout>
 
         <ImageButton
@@ -54,8 +54,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:background="@null"
-            android:src="@drawable/btn_style_delete" android:layout_marginLeft="10dp"/>
+            android:contentDescription="@string/nodes"
+            android:src="@drawable/btn_style_delete" />
 
         <ImageButton
             android:id="@+id/btn_camera"
@@ -63,8 +65,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
             android:background="@null"
-            android:src="@drawable/btn_style_photo" android:layout_marginRight="10dp"/>
+            android:contentDescription="@string/nodes"
+            android:src="@drawable/btn_style_photo" />
     </RelativeLayout>
 
 </LinearLayout>

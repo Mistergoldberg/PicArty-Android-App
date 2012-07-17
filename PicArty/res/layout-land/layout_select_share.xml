@@ -32,12 +32,13 @@
         android:padding="2dp"
         android:text="@string/local_label"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
+
     <ListView
         android:id="@+id/lv_list_local"
         android:layout_width="fill_parent"
-        android:layout_height="125dp"
+        android:layout_height="80dp"
         android:padding="2dp" >
+
     </ListView>
 
     <TextView

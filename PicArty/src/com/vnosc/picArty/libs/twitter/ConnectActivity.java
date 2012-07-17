@@ -72,12 +72,17 @@ public class ConnectActivity extends Activity {
 				if (mTwitter.hasAccessToken()){
 					Intent intent = new Intent(ConnectActivity.this, SendImageActivity.class);
 					intent.putExtra("filename", fileName);
-					startActivity(intent);
+					startActivityForResult(intent, 0);
 				}
 				else
 					mTwitter.authorize();
 			}
 		});
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == 0)
+			this.finish();
 	}
 	
 	private void onTwitterClick() {

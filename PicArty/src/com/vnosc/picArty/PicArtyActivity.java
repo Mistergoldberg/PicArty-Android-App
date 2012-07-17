@@ -102,7 +102,8 @@ public class PicArtyActivity extends Activity implements
 				public void onClick(View arg0) {
 					if (!isTaking) {
 						isTaking = true;
-						camera.takePicture(shutterCallback, null, myPictureCallback_JPG);
+						camera.takePicture(shutterCallback, null,
+								myPictureCallback_JPG);
 					}
 				}
 			});
@@ -118,7 +119,6 @@ public class PicArtyActivity extends Activity implements
 			@Override
 			public void handleMessage(Message msg) {
 				try {
-
 					ImageView imageview;
 					int widthImage = (int) (Common.IMAGE_WIDTH
 							* (float) heightScreen / Common.IMAGE_HEIGHT);
@@ -127,28 +127,30 @@ public class PicArtyActivity extends Activity implements
 						// portrait images
 						RelativeLayout pageLayout = new RelativeLayout(
 								getApplicationContext());
-
-						imageview = new ImageView(PicArtyActivity.this);
-						imageview.setScaleType(ImageView.ScaleType.FIT_XY);
-						imageview.setImageBitmap(listBitmapSolid.get(i * 2));
 						RelativeLayout.LayoutParams verticalParam = new RelativeLayout.LayoutParams(
 								LayoutParams.FILL_PARENT,
 								displayMetric.heightPixels);
 						verticalParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
-						pageLayout.addView(imageview, verticalParam);
-						listLayout.add(pageLayout);
 
-						// landscape images
-						pageLayout = new RelativeLayout(getApplicationContext());
-
-						imageview = new ImageView(PicArtyActivity.this);
-						imageview.setScaleType(ImageView.ScaleType.FIT_XY);
-						imageview
-								.setImageBitmap(listBitmapSolid.get(i * 2 + 1));
-						pageLayout.addView(imageview,
-								new LinearLayout.LayoutParams(widthImage,
-										heightScreen));
-						listLayout.add(pageLayout);
+						// imageview = new ImageView(PicArtyActivity.this);
+						// imageview.setScaleType(ImageView.ScaleType.FIT_XY);
+						// imageview.setImageBitmap(listBitmapSolid.get(i * 2));
+						//
+						// pageLayout.addView(imageview, verticalParam);
+						// listLayout.add(pageLayout);
+						//
+						// // landscape images
+						// pageLayout = new
+						// RelativeLayout(getApplicationContext());
+						//
+						// imageview = new ImageView(PicArtyActivity.this);
+						// imageview.setScaleType(ImageView.ScaleType.FIT_XY);
+						// imageview
+						// .setImageBitmap(listBitmapSolid.get(i * 2 + 1));
+						// pageLayout.addView(imageview,
+						// new LinearLayout.LayoutParams(widthImage,
+						// heightScreen));
+						// listLayout.add(pageLayout);
 
 						// portrait images glow
 						pageLayout = new RelativeLayout(getApplicationContext());
@@ -180,10 +182,11 @@ public class PicArtyActivity extends Activity implements
 				updateScrollPage();
 			}
 		};
-		listBitmapSolid = new ArrayList<Bitmap>();
 		listBitmapGlow = new ArrayList<Bitmap>();
+
+		initDatapage();
 		currentPos = getIntent().getIntExtra("position", 0);
-		isLandscape = true;
+		isLandscape = getIntent().getBooleanExtra("islandscape", true);
 		Display display = getWindowManager().getDefaultDisplay();
 		display.getWidth();
 		heightScreen = display.getHeight();
@@ -198,8 +201,6 @@ public class PicArtyActivity extends Activity implements
 		cameraButton = (ImageButton) findViewById(R.id.takepicture);
 		scrollImage = new HorizontalPager(getApplicationContext());
 		frameLayoutScroll = (FrameLayout) findViewById(R.id.id_frameLayout_mask);
-		imageMask = (ImageView) findViewById(R.id.id_image_mask);
-		// linearLayout = (LinearLayout) findViewById(R.id.id_layout_camera);
 		linearToolLeft = (RelativeLayout) findViewById(R.id.id_selection_layout);
 		// set onclick for buttons selection
 		showImageScroll.setOnClickListener(this);
@@ -208,27 +209,48 @@ public class PicArtyActivity extends Activity implements
 		showGallery.setOnClickListener(this);
 
 		getWindow().setFormat(PixelFormat.UNKNOWN);
-		surfaceView = (SurfaceView) findViewById(R.id.camerapreview);
-		int widthCamera = (int) (Common.CAMERA_WITH * (float) heightScreen / Common.CAMERA_HEIGHT);
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-				widthCamera, LayoutParams.FILL_PARENT);
 
+		surfaceView = (SurfaceView) findViewById(R.id.camerapreview);
+		imageMask = (ImageView) findViewById(R.id.id_image_mask);
+		imageMask.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (loaded)
+					animatePieces();
+			}
+		});
+		int widthCamera = (int) (Common.CAMERA_WITH * (float) heightScreen / Common.CAMERA_HEIGHT);
+
+		FrameLayout layoutCamera = (FrameLayout) findViewById(R.id.id_layout_camera);
+		// layoutCamera.setLayoutParams(layoutParams);
+		RelativeLayout.LayoutParams layoutParamCamera = new RelativeLayout.LayoutParams(
+				widthCamera, LayoutParams.FILL_PARENT);
+		layoutParamCamera.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		layoutCamera.setLayoutParams(layoutParamCamera);
+
+		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+				widthCamera, LayoutParams.FILL_PARENT);
+		layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
 		if (density <= 1) {
-			layoutParams = new LinearLayout.LayoutParams(widthCamera,
-					LayoutParams.FILL_PARENT, Gravity.LEFT);
+			layoutParams = new FrameLayout.LayoutParams(widthCamera,
+					LayoutParams.FILL_PARENT);
+			layoutParams.gravity = Gravity.LEFT;
 			layoutParams.setMargins(0, 0, 46 * (int) density, 0);
 			linearToolLeft.setVisibility(View.GONE);
+
+			layoutParamCamera.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+			layoutCamera.setLayoutParams(layoutParamCamera);
 		}
+
 		surfaceView.setLayoutParams(layoutParams);
+		imageMask.setLayoutParams(layoutParams);
 		surfaceHolder = surfaceView.getHolder();
 		surfaceHolder.addCallback(this);
 		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		orientation = Configuration.ORIENTATION_LANDSCAPE;
 
 		// init array mask list
-		listLayout = new ArrayList<RelativeLayout>();
 		listLayoutGlow = new ArrayList<RelativeLayout>();
-		initDatapage();
 
 		initParams();
 	}
@@ -268,13 +290,6 @@ public class PicArtyActivity extends Activity implements
 		this.addContentView(listPieces, templateTabParam);
 		listPieces.setVisibility(View.GONE);
 		/** end view finder **/
-		imageMask.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				updateScrollPage();
-			}
-		});
 
 		// create image mask slide show
 		updateScrollPage();
@@ -283,12 +298,12 @@ public class PicArtyActivity extends Activity implements
 
 	ShutterCallback shutterCallback = new ShutterCallback() {
 
-	    @Override
-	    public void onShutter() {
+		@Override
+		public void onShutter() {
 
-	    }
+		}
 	};
-	
+
 	/** The my picture callback_ jpg. */
 	Camera.PictureCallback myPictureCallback_JPG = new Camera.PictureCallback() {
 
@@ -395,6 +410,7 @@ public class PicArtyActivity extends Activity implements
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
+
 		if (camera != null) {
 			camera.stopPreview();
 			camera.release();
@@ -474,15 +490,11 @@ public class PicArtyActivity extends Activity implements
 			}
 			listBitmapGlow = null;
 		}
-		if (listBitmapSolid != null) {
-			for (int i = 0; i < Common.NUMBER_OF_MASK; i++) {
-				listBitmapSolid.get(i).recycle();
-			}
-			listBitmapSolid = null;
+
+		if (bitmapMask != null) {
+			bitmapMask.recycle();
 		}
-		if (listLayout != null) {
-			listLayout = null;
-		}
+
 		if (listLayoutGlow != null) {
 			listLayoutGlow = null;
 		}
@@ -501,7 +513,7 @@ public class PicArtyActivity extends Activity implements
 		case R.id.show_scroll:
 			animatePieces();
 			break;
-		case R.id.on_off:
+		case R.id.on_off:// turn on or off flash mode
 			try {
 				if (!isAfterCamera)
 					return;
@@ -533,7 +545,7 @@ public class PicArtyActivity extends Activity implements
 			}
 			break;
 
-		case R.id.select_camera:
+		case R.id.select_camera:// switch camera
 			try {
 				int cameraCount = 0;
 				Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
@@ -555,10 +567,12 @@ public class PicArtyActivity extends Activity implements
 							try {
 								camera = Camera.open(camIdx);
 								parameters = camera.getParameters();
-								List<Camera.Size> sizes = parameters.getSupportedPictureSizes();
+								List<Camera.Size> sizes = parameters
+										.getSupportedPictureSizes();
 								for (Camera.Size size : sizes) {
 									if (size.width == 640 && size.height == 480) {
-										parameters.setPictureSize(640, 480);
+										parameters.setPictureSize(size.width,
+												size.height);
 									}
 								}
 								camera.setDisplayOrientation(0);
@@ -579,10 +593,12 @@ public class PicArtyActivity extends Activity implements
 							try {
 								camera = Camera.open(camIdx);
 								parameters = camera.getParameters();
-								List<Camera.Size> sizes = parameters.getSupportedPictureSizes();
+								List<Camera.Size> sizes = parameters
+										.getSupportedPictureSizes();
 								for (Camera.Size size : sizes) {
 									if (size.width == 640 && size.height == 480) {
-										parameters.setPictureSize(640, 480);
+										parameters.setPictureSize(size.width,
+												size.height);
 									}
 								}
 								camera.setDisplayOrientation(0);
@@ -619,43 +635,52 @@ public class PicArtyActivity extends Activity implements
 		 * this function executed when the sensor of device changed
 		 */
 
+		// return;
+
 		float pitch = event.values[2];
 		if (isLandscape && pitch <= 30 && pitch >= -30) {
-			if (isLandscape) {
-				currentPos = Common.NUMBER_OF_MASK - 1 - currentPos;// dao chieu
-																	// neu
-																	// portrait
-				scrollImage.removeAllViews();
-				isLandscape = !isLandscape;
-				scrollImage.setIsHorizontal(false);
+			currentPos = Common.NUMBER_OF_MASK - 1 - currentPos;// revert
+																// current
+																// position
+			scrollImage.removeAllViews();
+			isLandscape = !isLandscape;
+			scrollImage.setIsHorizontal(false);
+			if (loaded)
 				updateScrollPage();
+			else
+				loadBitmapMask();
 
-				orientation = Configuration.ORIENTATION_PORTRAIT;
-				listPieces.drawScroll(Common.NUMBER_OF_MASK - 1 - currentPos,
-						Configuration.ORIENTATION_PORTRAIT);
-				cameraButton.setBackgroundDrawable(getResources().getDrawable(
-						R.drawable.camera_button_style_portrait));
-				selectCamera.setBackgroundDrawable(getResources().getDrawable(
-						R.drawable.toggle_camera_portrait_style));
-				if (!isFlashOn)
-					flashSwitch.setBackgroundDrawable(getResources()
-							.getDrawable(
-									R.drawable.toggle_flash_on_portrait_style));
-				else
-					flashSwitch
-							.setBackgroundDrawable(getResources().getDrawable(
-									R.drawable.toggle_flash_portrait_style));
-				showImageScroll.setBackgroundDrawable(getResources()
-						.getDrawable(R.drawable.icon_small_portrait_style));
-			}
-		} else if (pitch < -60 || pitch > 60) {
-			if (!isLandscape || isFirstRunning) {
-				currentPos = Common.NUMBER_OF_MASK - 1 - currentPos;
+			orientation = Configuration.ORIENTATION_PORTRAIT;
+			listPieces.drawScroll(Common.NUMBER_OF_MASK - 1 - currentPos,
+					Configuration.ORIENTATION_PORTRAIT);
+			cameraButton.setBackgroundDrawable(getResources().getDrawable(
+					R.drawable.camera_button_style_portrait));
+			selectCamera.setBackgroundDrawable(getResources().getDrawable(
+					R.drawable.toggle_camera_portrait_style));
+			if (!isFlashOn)
+				flashSwitch.setBackgroundDrawable(getResources().getDrawable(
+						R.drawable.toggle_flash_on_portrait_style));
+			else
+				flashSwitch.setBackgroundDrawable(getResources().getDrawable(
+						R.drawable.toggle_flash_portrait_style));
+			showImageScroll.setBackgroundDrawable(getResources().getDrawable(
+					R.drawable.icon_small_portrait_style));
+		} else if (pitch < -50 || pitch > 50) {
+			if (!isLandscape || !loaded) {
+				if (!loaded)
+					loadBitmapMask();
+				
 				scrollImage.removeAllViews();
 				scrollImage.setIsHorizontal(true);
-				isLandscape = !isLandscape;
+				if(loaded)	{
+					isLandscape = !isLandscape;
+					currentPos = Common.NUMBER_OF_MASK - 1 - currentPos;// revert
+				// current// position
+				}
 
-				updateScrollPage();
+				if (loaded)
+					updateScrollPage();
+
 				orientation = Configuration.ORIENTATION_LANDSCAPE;
 				listPieces.drawScroll(currentPos,
 						Configuration.ORIENTATION_LANDSCAPE);
@@ -684,11 +709,12 @@ public class PicArtyActivity extends Activity implements
 		 */
 		if (isShowTemplate) {
 			listPieces.setVisibility(View.GONE);
-			if (density <= 1) {
+			if (density <= 1) {// if device have small screen, hide tool bar
 				linearToolLeft.setVisibility(View.GONE);
 			}
-			// scrollImage.setVisibility(View.GONE);
 			isShowTemplate = false;
+
+			// remove all old view of scroll view after load new views to scroll
 			scrollImage.removeAllViews();
 			updateScrollPage();
 		} else {
@@ -696,8 +722,10 @@ public class PicArtyActivity extends Activity implements
 			if (density <= 1) {
 				linearToolLeft.setVisibility(View.VISIBLE);
 			}
-			// scrollImage.setVisibility(View.VISIBLE);
+
 			isShowTemplate = true;
+
+			// remove all old view of scroll view after load new views to scroll
 			scrollImage.removeAllViews();
 			updateScrollPage();
 		}
@@ -707,28 +735,44 @@ public class PicArtyActivity extends Activity implements
 		/*
 		 * This function used to update content of scroll
 		 */
-		if (loaded) {
+		if (loaded) {// if all bitmap loaded
 			try {
 				for (int i = 0; i < Common.NUMBER_OF_MASK; i++) {
 
-					if (!isLandscape) {
+					if (!isLandscape) {// loading all bitmap for landscape
+										// orientation
 
-						if (!isShowTemplate) {
-							scrollImage.addView(listLayout
-									.get(Common.NUMBER_OF_MASK * 2 - 2
-											* (i + 1)));
-							scrollImage.setCurrentScreen(currentPos, false);
-						} else {
+						if (!isShowTemplate) {// loading solid bitmap if scroll
+												// bar have shown
+							// scrollImage.addView(listLayout
+							// .get(Common.NUMBER_OF_MASK * 2 - 2
+							// * (i + 1)));
+							// scrollImage.setCurrentScreen(currentPos, false);
+							imageMask.setVisibility(View.VISIBLE);
+							scrollImage.setVisibility(View.GONE);
+							loadBitmapMask();
+
+						} else {// loading glow bitmap if scroll bar have not
+								// shown
+							imageMask.setVisibility(View.GONE);
+							scrollImage.setVisibility(View.VISIBLE);
 							scrollImage.addView(listLayoutGlow
 									.get(Common.NUMBER_OF_MASK * 2 - 2
 											* (i + 1)));
 							scrollImage.setCurrentScreen(currentPos, false);
 						}
-					} else {
-						if (!isShowTemplate) {
-							scrollImage.addView(listLayout.get(i * 2 + 1));
-							scrollImage.setCurrentScreen(currentPos, false);
-						} else {
+					} else {// loading all bitmap for portrait orientation
+						if (!isShowTemplate) {// loading solid bitmap if scroll
+												// bar have shown
+							imageMask.setVisibility(View.VISIBLE);
+							scrollImage.setVisibility(View.GONE);
+							loadBitmapMask();
+							// scrollImage.addView(listLayout.get(i * 2 + 1));
+							// scrollImage.setCurrentScreen(currentPos, false);
+						} else {// loading glow bitmap if scroll bar have not
+								// shown
+							imageMask.setVisibility(View.GONE);
+							scrollImage.setVisibility(View.VISIBLE);
 							scrollImage.addView(listLayoutGlow.get(i * 2 + 1));
 							scrollImage.setCurrentScreen(currentPos, false);
 						}
@@ -744,33 +788,20 @@ public class PicArtyActivity extends Activity implements
 		/*
 		 * This function used to initiation images and layouts for scroll
 		 */
+
 		Thread t = new Thread() {
 			@Override
 			public void run() {
 				try {
 					Bitmap bitmap;
 					// ImageView imageview;
-					int widthImage = (int) (Common.IMAGE_WIDTH
-							* (float) heightScreen / Common.IMAGE_HEIGHT);
-					for (int i = 0; i < Common.NUMBER_OF_MASK; i++) {
-
-						// portrait images
-						bitmap = Common.getBitmapFromAsset(
-								getApplicationContext(),
-								"images/templates/portrait/solid/graphic_portrait_min_"
-										+ (i + 1) + ".png");
-						listBitmapSolid.add(bitmap);
-
-						// landscape images
-						bitmap = Common.getBitmapFromAsset(
-								getApplicationContext(),
-								"images/templates/landscape/solid/graphic_landscape_min_"
-										+ (i + 1) + ".png");
-
-						bitmap = Bitmap.createScaledBitmap(bitmap, widthImage,
-								heightScreen, true);
-						listBitmapSolid.add(bitmap);
-
+					for (int i = 0; i < Common.NUMBER_OF_MASK; i++) {// loading
+																		// all
+																		// mask
+																		// bitmap
+																		// from
+																		// asset
+																		// folder
 						// portrait images glow
 						bitmap = Common.getBitmapFromAsset(
 								getApplicationContext(),
@@ -785,17 +816,79 @@ public class PicArtyActivity extends Activity implements
 										+ (i + 1) + ".png");
 
 						listBitmapGlow.add(bitmap);
-
 					}
 					handler.sendEmptyMessage(0);
 				} catch (Exception ex) {
 				}
 				loaded = true;
-				updateScrollPage();
 				isFirstRunning = false;
 			}
 		};
 		t.start();
+	}
+
+	public void loadBitmapMask() {
+		if (isLandscape) {
+			Thread t = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					handler.post(new Runnable() {
+						@Override
+						public void run() {
+
+							if (bitmapMask != null)
+								bitmapMask.recycle();
+							bitmapMask = null;
+							try {
+								bitmapMask = Common.getBitmapFromAsset(
+										getApplicationContext(),
+										"images/templates/landscape/solid/graphic_landscape_min_"
+												+ (currentPos + 1) + ".png");
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							imageMask.setScaleType(ImageView.ScaleType.FIT_XY);
+							imageMask.setImageBitmap(bitmapMask);
+
+						}
+					});
+
+				}
+			});
+			t.start();
+		} else {
+			Thread t = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					handler.post(new Runnable() {
+						@Override
+						public void run() {
+
+							if (bitmapMask != null)
+								bitmapMask.recycle();
+							bitmapMask = null;
+							try {
+								bitmapMask = Common
+										.getBitmapFromAsset(
+												getApplicationContext(),
+												"images/templates/portrait/solid/graphic_portrait_min_"
+														+ (Common.NUMBER_OF_MASK - currentPos)
+														+ ".png");
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							imageMask.setScaleType(ImageView.ScaleType.FIT_XY);
+							imageMask.setImageBitmap(bitmapMask);
+
+						}
+					});
+
+				}
+			});
+			t.start();
+		}
 	}
 
 	/** The on screen switch listener. */
@@ -809,21 +902,6 @@ public class PicArtyActivity extends Activity implements
 			 */
 			// Do something long
 			/*
-			 * loading other images
-			 */
-			Runnable runnable = new Runnable() {
-				@Override
-				public void run() {
-					handler.post(new Runnable() {
-						@Override
-						public void run() {
-
-						}
-					});
-				}
-			};
-			new Thread(runnable).start();
-			/*
 			 * end loading images
 			 */
 			imageMask.setVisibility(View.GONE);
@@ -834,14 +912,16 @@ public class PicArtyActivity extends Activity implements
 				animatePieces();
 			}
 
-			if (isLandscape)
+			if (isLandscape) {
 				listPieces.drawScroll(scrollImage.getCurrentScreen(),
 						orientation);
-			else {
+
+			} else {
 				listPieces.drawScroll(
 						Common.NUMBER_OF_MASK - 1
 								- scrollImage.getCurrentScreen(), orientation);
 			}
+			loadBitmapMask();
 
 		}
 
@@ -855,6 +935,7 @@ public class PicArtyActivity extends Activity implements
 		@Override
 		public void onChangeStartEnd(int screen) {
 			currentPos = screen;
+			loadBitmapMask();
 			if (isLandscape)
 				listPieces.drawScroll(currentPos, orientation);
 			else
@@ -892,12 +973,10 @@ public class PicArtyActivity extends Activity implements
 	private Parameters parameters;// parameter for camera setting
 	private int orientation;// orientation of mobile
 	private Configuration config;// get config
-	private ArrayList<RelativeLayout> listLayout;// private array list layout
-													// for list mask
+									// for list mask
 	private ArrayList<RelativeLayout> listLayoutGlow;// array list for image
 														// mask glow
 
-	private ArrayList<Bitmap> listBitmapSolid;// bitmaps for solid image mask
 	private ArrayList<Bitmap> listBitmapGlow;// bitmaps for glow image mask
 	private boolean isLandscape;// check orientation physical
 	private FrameLayout.LayoutParams templateTabParam;// variables for layout by
@@ -905,6 +984,7 @@ public class PicArtyActivity extends Activity implements
 	private SimpleDateFormat timeStampFormat = new SimpleDateFormat(
 			"yyyyMMddHHmmssSS");// date format for name of picture
 	private ImageView imageMask;
+	private Bitmap bitmapMask;
 	private FrameLayout.LayoutParams paramLayout;
 	private RelativeLayout linearToolLeft;
 	private float density;
