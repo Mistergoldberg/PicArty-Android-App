@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vnosc.picArty"
+    package="com.photalicious.picArty"
     android:installLocation="preferExternal"
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="9" />
+    <uses-sdk android:minSdkVersion="10" />
 
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -17,24 +17,27 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.android.email.permission.ACCESS_PROVIDER" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <uses-feature
         android:name="android.hardware.camera.front"
         android:required="false" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
-        android:name=".libs.tumblr.TumblrApplication"
         android:icon="@drawable/icon"
         android:label="@string/app_name" >
         <activity
-            android:name="com.vnosc.picArty.PicArtyActivity"
+            android:name="com.photalicious.picArty.PicArtyActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name="com.vnosc.picArty.SplashScreen"
+            android:name="com.photalicious.picArty.SplashScreen"
             androidLlabel="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
@@ -45,269 +48,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.vnosc.picArty.CategoryActivity"
+            android:name="com.photalicious.picArty.CategoryActivity"
             androidLlabel="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name="com.vnosc.picArty.GridImagesActivity"
+            android:name="com.photalicious.picArty.GridImagesActivity"
             androidLlabel="@string/app_name"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name="com.vnosc.picArty.ShowGalleryActivity"
+            android:name="com.photalicious.picArty.ShowGalleryActivity"
             androidLlabel="@string/app_name"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name="com.vnosc.picArty.DeleteImageActivity"
+            android:name="com.photalicious.picArty.DeleteImageActivity"
             androidLlabel="@string/app_name"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
-        <activity
-            android:name=".SelectShare"
-            androidLlabel="@string/app_name"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.twitter.ConnectActivity"
-            androidLlabel="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.twitter.SendImageActivity"
-            androidLlabel="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.FlickShareActivity"
-            androidLlabel="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="picarty-oauth" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.tumblr.UploadImageActivity"
-            androidLlabel="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-        </activity>
-        <activity
-            android:name=".libs.tumblr.AccountActivity"
-            androidLlabel="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-        </activity>
-        <activity
-            android:name=".libs.tumblr.PostActivity"
-            androidLlabel="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-        </activity>
-        <activity
-            android:name=".libs.flickrfree.FlickrFree"
-            androidLlabel="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
-        </activity>
-
-        <service
-            android:name=".libs.tumblr.TumblrService"
-            android:label="TumblrService" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.tumblr.POST_PHOTO" />
-            </intent-filter>
-        </service>
-
-<!--         FLick service -->
-
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.FlickrFree"
-            android:label="@string/app_name" >
-           
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.AboutActivity"
-            android:label="@string/about" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.ABOUT" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.AuthenticateActivity"
-            android:label="@string/authenticate" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.AUTHENTICATE" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.ImageGrid"
-            android:label="" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.IMAGEGRID" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.CommentLinkView"
-            android:label="" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.COMMENTLINKVIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.ImageFullScreen"
-            android:label="@string/imgfullscreen"
-            android:screenOrientation="sensor" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.IMAGEFULLSCREEN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.ImageInfo"
-            android:label="@string/imageinfo" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.IMAGEINFO" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.ImageComments"
-            android:label="@string/imagecomments" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.IMAGECOMMENTS" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.ImageContext"
-            android:label="@string/imagecontext" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.IMAGECONTEXT" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.ImageSets"
-            android:label="@string/imagesets" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.IMAGESETS" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.Groups"
-            android:label="@string/groups" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.GROUPS" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.ImageCollections"
-            android:label="@string/imagecollections" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.IMAGECOLLECTIONS" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.UserView"
-            android:label="@string/userview" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.USERVIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.ContactsView"
-            android:label="@string/contactsview" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.CONTACTSVIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.SearchView"
-            android:label="@string/contactsview" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.SEARCHVIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.ImageTags"
-            android:label="@string/tagsview" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.IMAGETAGS" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.PictureSettings"
-            android:label="@string/picturesettings" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.PictureSettings" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.TransferProgress"
-            android:label="@string/transferprogress" >
-            <intent-filter>
-                <action android:name="com.vnosc.picArty.libs.flickr.TRANSFERPROGRESS" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vnosc.picArty.libs.flickr.PictureSendReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:icon="@drawable/icon"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="image/*" />
-            </intent-filter>
-        </activity>
-
-        <service
-            android:name="com.vnosc.picArty.libs.flickr.TransferService"
-            android:label="@string/filetransfers" />
     </application>
 
 </manifest>

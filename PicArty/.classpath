@@ -4,17 +4,8 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry exported="true" kind="lib" path="libs/signpost-commonshttp4-1.2.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/signpost-core-1.2.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/signpost-jetty6-1.2.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/twitter4j-core-2.1.6.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/tumblr/apache-mime4j-0.6.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/tumblr/guice-2.0-no_aop.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/tumblr/httpmime-4.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/tumblr/libGoogleAnalytics.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/tumblr/roboguice-1.1.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/twitter4j-media-support-2.2.6.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/flickr/httpclient-4.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/flickr/httpcore-4.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/activation.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/additionnal.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/mail.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
