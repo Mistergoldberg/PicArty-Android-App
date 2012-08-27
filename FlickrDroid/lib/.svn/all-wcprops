@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 27
+/svn/!svn/ver/123/trunk/lib
+END
+httpcore-4.0.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/123/trunk/lib/httpcore-4.0.1.jar
+END
+apache-mime4j-0.6.jar
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/123/trunk/lib/apache-mime4j-0.6.jar
+END
+httpmime-4.0.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/123/trunk/lib/httpmime-4.0.1.jar
+END
+httpclient-4.0.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/123/trunk/lib/httpclient-4.0.1.jar
+END
