@@ -45,15 +45,6 @@
             android:layout_marginBottom="45dp"
             android:background="@drawable/gallery_glow_style"
             android:contentDescription="@string/nodes" />
-
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/logo" />
 
     </RelativeLayout>
 
