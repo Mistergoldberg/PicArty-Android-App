@@ -1,0 +1,4 @@
+Make clickable username in Image Info more obviously clickable -- add a button, or change the
+style of the view, or something to indicate to the user that they can click there.
+
+Enable/Disable "Sets" and "Collections" depending on whether user has any Sets or Collections.
